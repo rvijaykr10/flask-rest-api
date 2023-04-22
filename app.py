@@ -1,4 +1,5 @@
-# docker build -t rest-apis-flask-python .
+# docker build -t flask-rest-api .
+# docker run -p 5000:5000 flask-rest-api
 from flask import Flask, request
 
 app = Flask(__name__)
