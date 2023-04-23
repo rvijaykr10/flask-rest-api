@@ -7,7 +7,7 @@ docker-compose up -d -->
 # docker run -p 5000:5000 flask-rest-api
 # docker run -dp 5005:5000 -w /app -v "$(pwd):/app" flask-rest-api -->
 
-Create .flaskenv file and add the following
+Create .flaskenv file and add the following :
 
 > FLASK_APP=app.py
 
@@ -15,6 +15,6 @@ Create .flaskenv file and add the following
 
 > FLASK_DEBUG=True
 
-Use below command for up and running...
+Use below command for up and running ...
 
 > docker-compose up -d
