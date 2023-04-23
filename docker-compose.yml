@@ -8,3 +8,8 @@ services:
     image: flask-rest-api
     ports:
       - "5000:5000"
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: >
+      sh -c "flask run --host=0.0.0.0 --port=5000 --reload"

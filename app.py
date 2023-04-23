@@ -1,6 +1,7 @@
 # docker build -t flask-rest-api .
 # docker run -p 5000:5000 flask-rest-api
-
+# docker run -dp 5005:5000 -w /app -v "$(pwd):/app" flask-rest-api
+#
 import uuid
 from flask import Flask, request
 from flask_smorest import abort
@@ -40,7 +41,7 @@ def create_item():
         abort(400,
               message="Bad request. Ensure 'price', 'store_id', 'name' are not included in the JSON payload")
         
-    if item in items.values():
+    for item in items.values():
         if (
             item_data['name'] == item['store_id']
             and item_data['store_id'] == item['store_id']
@@ -75,3 +76,36 @@ def get_item(item_id):
         return items[item_id]
     except KeyError:
         abort(404, message='Item not found.')
+        
+# delete specific item
+@app.delete('/item/<string:item_id>')
+def delete_item(item_id):
+    try:
+        del items[item_id]
+        return {'message': 'Item deleted.'}
+    except KeyError:
+        abort(404, message='Item not found.')
+      
+# update specific item  
+@app.put('/item/<string:item_id>')
+def update_item(item_id):
+    item_data = request.get_json()
+    if 'price' not in item_data or 'name' not in item_data:
+        abort(400, message="Bad request. Ensure 'price' and 'name' are included in the JSON payload")
+    
+    try:
+        item = items[item_id]
+        item |= item_data
+        
+        return item
+    except KeyError:
+        abort(404, message='Item not found')
+        
+# delete specific store 
+@app.delete('/store/<string:store_id>')
+def delete_store(store_id):
+    try:
+        del stores[store_id]
+        return {'message': 'Store deleted.'}
+    except KeyError:
+        abort(404, message='Store not found.')
